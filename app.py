@@ -19,7 +19,7 @@ logging.getLogger("werkzeug").addFilter(NoHeartbeatFilter())
 
 def get_config(key, default=None):
     config = configparser.ConfigParser()
-    config_file = '/srt_public/app.conf'
+    config_file = '/app.conf'
     if os.path.exists(config_file):
         config.read(config_file)
         try:
@@ -36,7 +36,7 @@ SECRET_KEY = get_config('secret_key', 'vmffktmzm!@#')
 app.secret_key = SECRET_KEY  # 보안설정 안전한 랜덤
 
 # 로그 디렉토리 생성
-log_dir = '/srt_public/logs'
+log_dir = '/logs'
 os.makedirs(log_dir, exist_ok=True)
 
 
