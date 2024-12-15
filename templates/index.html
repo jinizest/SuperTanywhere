@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- Google Ad -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3590949130474067"
+     crossorigin="anonymous"></script>
+    <!-- Google Ad -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRT 예약 시스템</title>
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css">
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            font-size: 15px;
+            padding: 10px;
+            margin: 0 auto;
+            max-width: 500px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #333;
+            font-size: 30px;
+            text-align: center;
+            position: relative;
+            padding: 0px;
+            margin-bottom: 10px;
+        }
+        .creator {
+            font-size: 12px;
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            color: #bdbdbd;
+        }
+        label {
+            width: 80px;
+            height: 25px;
+            white-space: nowrap;
+            color: #333333;
+            margin: 0px !important;
+            font-weight: bold;
+        }
+        input, select, button {
+            box-sizing: border-box;
+        }
+        input {
+            height: 20px !important;
+            padding: 0.25px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 15px !important;
+            margin: 0px !important;
+        }
+        select {
+                height: 30px !important;
+                padding: 0.25px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                width: 200px;
+                font-size: 15px !important;
+                margin: 0px !important;
+    
+        }
+        button {
+            width: 120px;
+            height: 45px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            font-size: 15px;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 45px;
+            padding : 5px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        .search-button {
+            background-color: #000000;
+            border-color: #bdbdbd;
+            color: white;
+            width: 360px !important;
+            height: 45px !important;
+            font-size: 17px !important;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        .stop-button {
+            background-color: #808080;
+            border-color: #bdbdbd;
+            color: white;
+            width: 90px !important;
+            height: 45px !important;
+            font-size: 15px !important;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+        .input-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .small-input {
+            width: 80px !important;
+            height: 30px !important;
+            margin: 0px !important;
+        }
+        .large-input {
+            width: 350px !important;
+        }
+        .small-select {
+            width: 50px !important;
+            height: 30px !important;
+            padding-left: 5px;
+            text-align: left;
+        }
+        .cal-select {
+            width: 200px !important;
+            height: 30px !important;
+        }
+        .station-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .station-select {
+            display: flex;
+            flex-direction: column;
+            width: calc(45% - 10px);
+        }
+        .station-select:first-child {
+            align-items: flex-start;
+        }
+        .station-select:last-child {
+            align-items: flex-start;
+        }
+        .station-select label {
+            margin: 5px;
+        }
+        .swap-button {
+            background-color: #bbbbbb;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            flex-shrink: 0;
+            margin: 0 5px;
+        }
+        .swap-button:hover {
+            background-color: #646464;
+        }
+        .login-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            width: 200px;
+        }
+        .input-group label {
+            margin: 5px;
+        }
+        #log-area {
+            width: 100%;
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            box-sizing: border-box;
+            font-size: 10px; /* 원하는 크기로 조정 */
+        }
+        #start_hour, #start_minute, #end_hour, #end_minute {
+            width: 50px !important;
+            padding: 0 5px;
+            text-align: left;
+        }
+        #enable_telegram {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 플래시 메시지 스타일 추가 */
+        .flash-message {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .flash-success {
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
+            color: #3c763d;
+        }
+        
+        /* 팝업 스타일 추가 */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            margin-bottom: 10px;
+        }
+        .popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-height: 80vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+        .popup-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        @media (max-width: 500px) {
+            body {
+                padding: 2vw; /* 뷰포트 너비(viewport width)의 2%로 패딩 설정 */
+            }
+            h1 {
+                font-size: 20px;
+            }
+            
+            .creator {
+                font-size: 8px;
+            }
+            
+            /* input과 select 요소의 너비 조정 */
+            input#sid, input#spw, select#dep_station, select#arr_station {
+                width: 100% !important; /* 부모 요소의 너비에 맞춰 조정 */
+                box-sizing: border-box; /* 패딩과 보더를 포함한 너비 계산 */
+                margin-bottom: 5px; /* 요소 간의 여백 추가 */
+            }
+        }
+    </style>
+    <script>
+        let isReservationRunning = false;
+
+        function toggleInputField(selectId, inputId) {
+            var selectElement = document.getElementById(selectId);
+            var inputElement = document.getElementById(inputId);
+            if (selectElement.value === "direct") {
+                inputElement.style.display = "block";
+            } else {
+                inputElement.style.display = "none";
+            }
+        }
+
+        function toggleTelegramFields() {
+            var checkbox = document.getElementById('enable_telegram');
+            var telegramFields = document.getElementById('telegram_fields');
+            telegramFields.style.display = checkbox.checked ? 'block' : 'none';
+        }
+
+        function submitForm(event) {
+            event.preventDefault();
+            if (isReservationRunning) {
+                showPopup("이미 예약 프로세스가 진행 중입니다.");
+                return;
+            }
+            isReservationRunning = true;
+            document.getElementById('stopButton').disabled = false;
+            const formData = new FormData(event.target);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('results').innerHTML = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                isReservationRunning = false;
+                document.getElementById('stopButton').disabled = true;
+            });
+        }
+
+        function stopReservation() {
+            fetch('/stop', {method: 'POST'})
+            .then(response => response.json())
+            .then(data => {
+                showPopup("예약 프로세스가 중단되었습니다.");
+                isReservationRunning = false;
+                document.getElementById('stopButton').disabled = true;
+                document.getElementById('results').innerHTML = data.message;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('results').innerHTML = '중지 중 오류가 발생했습니다: ' + error.message;
+            });
+        }
+
+
+        window.onload = function() {
+            var today = new Date();
+            var dateInput = document.getElementById('date');
+            var days = ['일', '월', '화', '수', '목', '금', '토'];
+            dateInput.addEventListener('change', function() {
+                var selectedDate = new Date(this.value);
+                var dayOfWeek = days[selectedDate.getDay()];
+                this.title = `${this.value} (${dayOfWeek})`;
+            });
+            var formattedDate = today.toISOString().split('T')[0];
+            dateInput.value = formattedDate;
+            var initialDayOfWeek = days[today.getDay()];
+            dateInput.title = `${formattedDate} (${initialDayOfWeek})`;
+
+            document.getElementById('dep_station').value = '동탄';
+            document.getElementById('arr_station').value = '동대구';
+
+            var currentHour = today.getHours();
+            var currentMinute = today.getMinutes();
+            var roundedMinute = Math.floor(currentMinute / 10) * 10;
+            document.getElementById('start_hour').value = currentHour.toString().padStart(2, '0');
+            document.getElementById('start_minute').value = roundedMinute.toString().padStart(2, '0');
+            var endHour = (currentHour + 1) % 24;
+            document.getElementById('end_hour').value = endHour.toString().padStart(2, '0');
+            document.getElementById('end_minute').value = '00';
+
+            document.getElementsByName('phone_part1')[0].value = '010';
+
+            document.getElementById('sid').value = '{{ srt_id }}';
+            document.getElementById('spw').value = '{{ srt_password }}';
+            document.getElementById('bot_token').value = '{{ telegram_bot_token }}';
+            document.getElementById('chat_id').value = '{{ telegram_chat_id }}';
+            
+            var enableTelegram = document.getElementById('enable_telegram');
+            enableTelegram.checked = '{{ telegram_bot_token }}' && '{{ telegram_chat_id }}';
+            toggleTelegramFields();
+        }
+
+        var userIp = "{{ request.remote_addr }}";
+        var outputSource = new EventSource('/stream/' + userIp);
+        outputSource.onmessage = function(event) {
+            var outputDiv = document.getElementById("log-area");
+            if (event.data.startsWith("PASSWORD_ERROR:")) {
+                var errorMessage = event.data.split(":")[1];
+                showPopup("비밀번호 오류: " + errorMessage);
+                document.getElementById("stopButton").click();
+            } else if (event.data === "CRITICAL_ERROR") {
+                showPopup("오류가 발생했습니다. 예약 프로세스가 중단됩니다.");
+                document.getElementById("stopButton").click();
+            } else if (event.data.startsWith("SRT 예약 대기 완료")) {
+                showPopup("열차 예매에 성공했습니다!");
+            } else {
+                var newLogs = event.data.split('\n').filter(Boolean);
+                newLogs.forEach(function(log) {
+                    var logElement = document.createElement('div');
+                    logElement.textContent = log;
+                    outputDiv.insertBefore(logElement, outputDiv.firstChild);
+                });
+                while (outputDiv.childElementCount > 1000) {
+                    outputDiv.removeChild(outputDiv.lastChild);
+                }
+            }
+        };   
+
+        function toggleInputVisibility() {
+            var botTokenInput = document.getElementById('bot_token');
+            var chatIdInput = document.getElementById('chat_id');
+            var showInput = document.getElementById('show_input');
+            if (showInput.checked) {
+                botTokenInput.type = 'text';
+                chatIdInput.type = 'text';
+            } else {
+                botTokenInput.type = 'password';
+                chatIdInput.type = 'password';
+            }
+        }
+
+        function swapStations() {
+            var depStation = document.getElementById('dep_station');
+            var arrStation = document.getElementById('arr_station');
+            var customDepStation = document.getElementById('customDepStation');
+            var customArrStation = document.getElementById('customArrStation');
+            var tempValue = depStation.value;
+            var tempCustomValue = customDepStation.value;
+            depStation.value = arrStation.value;
+            customDepStation.value = customArrStation.value;
+            arrStation.value = tempValue;
+            customArrStation.value = tempCustomValue;
+            toggleInputField('dep_station', 'customDepStation');
+            toggleInputField('arr_station', 'customArrStation');
+        }
+
+        function sendHeartbeat() {
+            fetch('/heartbeat', { method: 'POST' })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error('Heartbeat failed');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        
+        // 15초마다 heartbeat 전송
+        setInterval(sendHeartbeat, 15000);
+        
+        // 페이지 언로드 시 서버에 알림
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('/disconnect');
+        });
+        
+        // 서버로부터의 메시지 처리
+        const eventSource = new EventSource('/stream/');
+        eventSource.onmessage = function(event) {
+            if (event.data === "CONNECTION_LOST") {
+                console.log("서버와의 연결이 끊어졌습니다.");
+                eventSource.close();
+                // 필요한 추가 처리
+            } else {
+                // 기존 메시지 처리 로직
+            }
+        };
+
+        function showPopup(message) {
+            var popupContainer = document.querySelector('.popup-container');
+            if (!popupContainer) {
+                popupContainer = document.createElement('div');
+                popupContainer.className = 'popup-container';
+                document.body.appendChild(popupContainer);
+            }
+        
+            var popup = document.createElement('div');
+            popup.className = 'popup';
+            popup.innerHTML = `
+                <div class="popup-content">
+                    <p>${message}</p>
+                    <button onclick="this.closest('.popup').remove()">확인</button>
+                </div>
+            `;
+            popupContainer.appendChild(popup);
+        }
+
+        function closePopup() {
+            var popup = document.querySelector('.popup');
+            if (popup) {
+                popup.remove();
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <main class="container" style="padding-top: 5px">
+
+        <h1>SRT MACRO <span class="creator">Created by Sambajin</span></h1>
+        <form method="post" onsubmit="submitForm(event)">
+            <div class="login-container">
+                <div class="input-group">
+                    <label for="sid">SRT ID:</label>
+                    <input type="text" id="sid" name="sid" value="{{ srt_id }}" required pattern="\d{1,10}" title="최대 10자리의 숫자만 입력 가능합니다" maxlength="10" inputmode="numeric">
+                </div>
+                <div class="input-group">
+                    <label for="spw">비밀번호:</label>
+                    <input type="password" id="spw" name="spw" value="{{ srt_password }}" required>
+                </div>
+            </div>
+            <div class="station-container">
+                <div class="station-select">
+                    <label for="dep_station">출발역:</label>
+                    <select id="dep_station" name="dep_station" onchange="toggleInputField('dep_station', 'customDepStation')">
+                        <option value="동탄">동탄</option>
+                        <option value="동대구">동대구</option>
+                        <option value="수서">수서</option>
+                        <option value="평택지제">평택지제</option>
+                        <option value="서대구">서대구</option>
+                        <option value="부산">부산</option>
+                        <option value="김천(구미)">김천(구미)</option>
+                        <option value="포항">포항</option>
+                        <option value="울산(통도사)">울산(통도사)</option>
+                        <option value="direct">직접입력</option>
+                    </select>
+                    <input type="text" id="customDepStation" name="customDepStation" style="display:none;" placeholder="출발역 입력">
+                </div>
+                <button type="button" style="margin-top: 20px" onclick="swapStations()" class="swap-button">⇄</button>
+                <div class="station-select">
+                    <label for="arr_station">도착역:</label>
+                    <select id="arr_station" name="arr_station" onchange="toggleInputField('arr_station', 'customArrStation')">
+                        <option value="동대구">동대구</option>
+                        <option value="동탄">동탄</option>
+                        <option value="수서">수서</option>
+                        <option value="평택지제">평택지제</option>
+                        <option value="서대구">서대구</option>
+                        <option value="부산">부산</option>
+                        <option value="김천(구미)">김천(구미)</option>
+                        <option value="포항">포항</option>
+                        <option value="울산(통도사)">울산(통도사)</option>
+                        <option value="direct">직접입력</option>
+                    </select>
+                    <input type="text" id="customArrStation" name="customArrStation" style="display:none;" placeholder="도착역 입력">
+                </div>
+            </div>
+            <div class="input-container">
+                <label for='date'>출발 날짜:</label>
+                <input type='date' id='date' name='date' class='cal-select' required>
+            </div>
+            <div class='input-container'>
+                <label for='start_hour'>시작 시간:</label>
+                <select id='start_hour' name='start_hour' style="width: 60px !important" class='small-select'>
+                    {% for hour in range(24) %}
+                    <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                    {% endfor %}
+                </select>
+                <select id='start_minute' name='start_minute' style="width: 60px !important" class='small-select'>
+                    {% for minute in range(0, 60, 10) %}
+                    <option value="{{ '%02d' % minute }}">{{ '%02d' % minute }}</option>
+                    {% endfor %}
+                </select>
+                <label for='end_hour'>종료 시간:</label>
+                <select id='end_hour' name='end_hour' style="width: 60px !important" class='small-select'>
+                    {% for hour in range(24) %}
+                    <option value="{{ '%02d' % hour }}">{{ '%02d' % hour }}</option>
+                    {% endfor %}
+                </select>
+                <select id='end_minute' name='end_minute' style="width: 60px !important" class='small-select'>
+                    {% for minute in range(0, 60, 10) %}
+                    <option value="{{ '%02d' % minute }}">{{ '%02d' % minute }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class='input-container'>
+                <label>휴대폰 번호:</label>
+                <input type='text' name='phone_part1' size='3' maxlength='3' class='small-input' value='{{ phone_number.split("-")[0] }}'>
+                ━
+                <input type='text' name='phone_part2' size='4' maxlength='4' class='small-input' value='{{ phone_number.split("-")[1] }}'>
+                ━
+                <input type='text' name='phone_part3' size='4' maxlength='4' class='small-input' value='{{ phone_number.split("-")[2] }}'>
+            </div>
+            <div class='input-container'>
+                <label>텔레그램 알림 봇 사용:</label>
+                <input type='checkbox' id='enable_telegram' name='enable_telegram' onclick='toggleTelegramFields()'>
+            </div>
+            <div id='telegram_fields' style='display:none;'>
+                <div class="input-container">
+                    <label>Bot Token:</label>
+                    <input class='small-text large-input' type='password' name='bot_token' id='bot_token' value='{{ telegram_bot_token }}'>
+                </div>
+                <div class="input-container">
+                    <label>Chat ID:</label>
+                    <input class='small-text large-input' type='password' name='chat_id' id='chat_id' value='{{ telegram_chat_id }}'>
+                </div>
+                <!-- <div class="input-container">
+                    <label>입력 내용 보기:</label>
+                    <input type='checkbox' id='show_input' onchange='toggleInputVisibility()'>
+                </div> -->
+            </div>
+            <div class="button-container">
+                <button type='submit' class="search-button">검색하기</button>
+                <button type='button' id='stopButton' class='stop-button' onclick='stopReservation()' disabled>중단</button>
+            </div>
+        </form>
+                <!-- 플래시 메시지 표시 영역 추가 -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        <div id='results' style="padding-top: 10px"></div>
+        <div id="log-area" style="height: 300px; overflow-y: scroll; border: 1px solid #ccc; padding: 10px; margin-top: 10px;"></div>
+   <!-- Google Ad -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3590949130474067"
+        crossorigin="anonymous"></script>
+   <!-- SuperTpublic -->
+   <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-3590949130474067"
+        data-ad-slot="7264371834"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+   <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+   </script>
+    <!-- Kakao Ad -->
+   <ins class="kakao_ad_area" style="display:none;"
+data-ad-unit = "DAN-k2pFIDi41TYfY06L"
+data-ad-width = "320"
+data-ad-height = "50"></ins>
+<script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+    <!-- Kakao Ad -->
+    </main>
+</body>
+</html>
