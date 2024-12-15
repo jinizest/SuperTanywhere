@@ -19,7 +19,7 @@ logging.getLogger("werkzeug").addFilter(NoHeartbeatFilter())
 
 def get_config(key, default=None):
     config = configparser.ConfigParser()
-    config_file = '/app.conf'
+    config_file = 'app.conf'
     if os.path.exists(config_file):
         config.read(config_file)
         try:
@@ -36,7 +36,7 @@ SECRET_KEY = get_config('secret_key', 'vmffktmzm!@#')
 app.secret_key = SECRET_KEY  # 보안설정 안전한 랜덤
 
 # 로그 디렉토리 생성
-log_dir = '/logs'
+log_dir = 'logs'
 os.makedirs(log_dir, exist_ok=True)
 
 
@@ -59,7 +59,7 @@ def get_user_logger(user_id):
         logger = logging.getLogger(f'user_{user_id}')
         logger.setLevel(logging.INFO)
         try:
-            log_file = os.path.join('/srt_public/logs', f'user_{user_id}.log')
+            log_file = os.path.join('/logs', f'user_{user_id}.log')
             handler = RotatingFileHandler(log_file, maxBytes=10000, backupCount=1)
             formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
             handler.setFormatter(formatter)
